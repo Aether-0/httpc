@@ -57,7 +57,7 @@ def print_colored_output(status_code, method):
     else:
         color = Fore.WHITE  # Default color
 
-    print(f"{color}[{method}]  {status_code}{Style.RESET_ALL}")
+    print(f"{color}[{method}]=>({status_code}){Style.RESET_ALL}")
 
 # Function to send request and get response code
 def send_request(url, method):
