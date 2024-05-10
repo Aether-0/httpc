@@ -56,7 +56,7 @@ def print_colored_output(status_code, method):
     else:
         color = Fore.WHITE  # Default color
 
-    print(f"{color}[{method}]=>({status_code}){Style.RESET_ALL}")
+    print(f"{color}[{method}]  {status_code}{Style.RESET_ALL}")
 
 # Function to send request and get response code
 def send_request(url, method):
@@ -77,14 +77,7 @@ def handle_single_url(url, methods):
             print_colored_output(status_code, method)
 
 # Function to handle file input
-def handle_file_input(filename, methods):
-    try:
-        with open(filename, 'r') as file:
-            urls = file.readlines()
-    except FileNotFoundError:
-        print(f"File '{filename}' not found.")
-        sys.exit(1)
-
+def handle_file_input(urls, methods):
     with ThreadPoolExecutor(max_workers=10) as executor:
         for url in urls:
             url = normalize_url(url)
@@ -97,15 +90,14 @@ def handle_file_input(filename, methods):
 # Parse command-line arguments
 parser = argparse.ArgumentParser(description="HTTP Method Tester Tool")
 parser.add_argument("--url", help="Test a single URL", metavar="URL")
-parser.add_argument("--url-f", help="Test URLs from a file", metavar="FILENAME")
 args = parser.parse_args()
-
-if not (args.url or args.url_f):
-    parser.print_help()
-    sys.exit(1)
 
 if args.url:
     handle_single_url(args.url, http_methods)
-elif args.url_f:
-    handle_file_input(args.url_f, http_methods)
-    
+else:
+    # Read URLs from stdin
+    urls = [line.strip() for line in sys.stdin]
+    if not urls:
+        print("No URLs provided.")
+        sys.exit(1)
+    handle_file_input(urls, http_methods)
