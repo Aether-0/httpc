@@ -27,7 +27,7 @@ print(AUTHOR_INFO)
 
 # Check if URL argument is provided
 if len(sys.argv) < 2:
-    print("Usage: {} <URL>".format(sys.argv[0]))
+    print("(+) Usage:python3 {} <URL>".format(sys.argv[0]))
     sys.exit(1)
 
 # Function to add "https://" if only domain is provided
@@ -62,7 +62,7 @@ def print_colored_output(status_code, method):
     else:
         color = Fore.WHITE  # Default color
     
-    print(f"{color}[{method}]  {status_code}{Style.RESET_ALL}")
+    print(f"[+]{color}({method})  {status_code}{Style.RESET_ALL}")
 
 # Function to send request and get response code
 def send_request(method):
@@ -70,7 +70,7 @@ def send_request(method):
         response = requests.request(method, url)
         return str(response.status_code), method
     except requests.exceptions.RequestException as e:
-        return f"Error occurred with {method} request: {e}", method
+        return f"[-] Error occurred with {method} request: {e}", method
 
 # Use ThreadPoolExecutor for concurrent execution
 with ThreadPoolExecutor(max_workers=10) as executor:
