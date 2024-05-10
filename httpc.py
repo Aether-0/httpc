@@ -1,4 +1,5 @@
 import sys
+import argparse
 import requests
 from concurrent.futures import ThreadPoolExecutor
 from colorama import Fore, Style
@@ -25,18 +26,11 @@ Github   : https://github.com/Aether-0
 print(BANNER)
 print(AUTHOR_INFO)
 
-# Check if URL argument is provided
-if len(sys.argv) < 2:
-    print("(+) Usage:python3 {} <URL>".format(sys.argv[0]))
-    sys.exit(1)
-
 # Function to add "https://" if only domain is provided
 def normalize_url(url):
     if not url.startswith("http://") and not url.startswith("https://"):
         url = "https://" + url
-    return url
-
-url = normalize_url(sys.argv[1])
+    return url.strip()
 
 # List of HTTP methods to test
 http_methods = [
@@ -61,20 +55,57 @@ def print_colored_output(status_code, method):
         color = Fore.YELLOW  # Yellow
     else:
         color = Fore.WHITE  # Default color
-    
-    print(f"[+]{color}({method})  {status_code}{Style.RESET_ALL}")
+
+    print(f"{color}[{method}]=>({status_code}){Style.RESET_ALL}")
 
 # Function to send request and get response code
-def send_request(method):
+def send_request(url, method):
     try:
         response = requests.request(method, url)
         return str(response.status_code), method
     except requests.exceptions.RequestException as e:
-        return f"[-] Error occurred with {method} request: {e}", method
+        return f"Error occurred with {method} request: {e}", method
 
-# Use ThreadPoolExecutor for concurrent execution
-with ThreadPoolExecutor(max_workers=10) as executor:
-    futures = [executor.submit(send_request, method) for method in http_methods]
-    for future in futures:
-        status_code, method = future.result()
-        print_colored_output(status_code, method)
+# Function to handle single URL input
+def handle_single_url(url, methods):
+    url = normalize_url(url)
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        futures = [executor.submit(send_request, url, method) for method in methods]
+        print(f"(+) URL: {Fore.BLUE}{url}{Style.RESET_ALL}")
+        for future in futures:
+            status_code, method = future.result()
+            print_colored_output(status_code, method)
+
+# Function to handle file input
+def handle_file_input(filename, methods):
+    try:
+        with open(filename, 'r') as file:
+            urls = file.readlines()
+    except FileNotFoundError:
+        print(f"File '{filename}' not found.")
+        sys.exit(1)
+
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        for url in urls:
+            url = normalize_url(url)
+            futures = [executor.submit(send_request, url, method) for method in methods]
+            print(f"(+) URL: {Fore.BLUE}{url}{Style.RESET_ALL}")
+            for future in futures:
+                status_code, method = future.result()
+                print_colored_output(status_code, method)
+
+# Parse command-line arguments
+parser = argparse.ArgumentParser(description="HTTP Method Tester Tool")
+parser.add_argument("--url", help="Test a single URL", metavar="URL")
+parser.add_argument("--url-f", help="Test URLs from a file", metavar="FILENAME")
+args = parser.parse_args()
+
+if not (args.url or args.url_f):
+    parser.print_help()
+    sys.exit(1)
+
+if args.url:
+    handle_single_url(args.url, http_methods)
+elif args.url_f:
+    handle_file_input(args.url_f, http_methods)
+    
