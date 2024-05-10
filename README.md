@@ -22,21 +22,24 @@ git clone https://github.com/Aether-0/httpc.git
 2. Navigate to the directory:
 
 ```
-cd your-repository
+cd httpc/
 ```
 
 3. Install dependencies:
 
-```
+```bash
+sudo ./install.sh
 pip install requests colorama
 ```
 
 4. Run the script:
 
 ```
-python3 httpc.py <URL>
+httpc --url <URL>
 ```
-
+```bash
+cat url.txt | httpc
+```
 Replace `<URL>` with the URL you want to test.
 
 ## Author
