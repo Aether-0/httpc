@@ -4,6 +4,7 @@
 # HTTP Method Tester
 
 This Python script sends HTTP requests to a specified URL using various HTTP methods and displays the response status codes.
+I also mae it with Go
 
 ## Features
 
