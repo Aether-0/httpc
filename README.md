@@ -1,7 +1,7 @@
-# HTTP Method Tester Tool
+# HTTPC - HTTP Method Tester Tool
 
 
-The **HTTP Method Tester Tool** is a lightweight and efficient Go-based utility designed to test various HTTP methods (e.g., GET, POST, PUT, DELETE) against a list of URLs. It is perfect for security researchers, developers, and system administrators who want to quickly identify which HTTP methods are supported by a server.
+**HTTPC** is a lightweight and efficient Go-based utility designed to test various HTTP methods (e.g., GET, POST, PUT, DELETE) against a list of URLs. It is perfect for security researchers, developers, and system administrators who want to quickly identify which HTTP methods are supported by a server.
 
 ---
 
@@ -23,18 +23,18 @@ The **HTTP Method Tester Tool** is a lightweight and efficient Go-based utility 
 
 2. **Clone the Repository**:
    ```bash
-   git clone https://github.com/yourusername/http-method-tester.git
-   cd http-method-tester
+   git clone https://github.com/Aether-0/httpc.git
+   cd httpc
    ```
 
 3. **Build the Tool**:
    ```bash
-   go build -o http-method-tester
+   go build -o httpc
    ```
 
 4. **Run the Tool**:
    ```bash
-   ./http-method-tester -url https://example.com
+   ./httpc -url https://example.com
    ```
 
 ---
@@ -60,32 +60,32 @@ The **HTTP Method Tester Tool** is a lightweight and efficient Go-based utility 
 
 1. **Test a Single URL**:
    ```bash
-   ./http-method-tester -url https://example.com
+   ./httpc -url https://example.com
    ```
 
 2. **Test Multiple URLs from stdin**:
    ```bash
-   cat urls.txt | ./http-method-tester
+   cat urls.txt | ./httpc
    ```
 
 3. **Test Specific HTTP Methods**:
    ```bash
-   ./http-method-tester -url https://example.com -m "GET,POST,PUT"
+   ./httpc -url https://example.com -m "GET,POST,PUT"
    ```
 
 4. **Filter by Status Codes**:
    ```bash
-   ./http-method-tester -url https://example.com -status "200,404"
+   ./httpc -url https://example.com -status "200,404"
    ```
 
 5. **Save Results to a File**:
    ```bash
-   ./http-method-tester -url https://example.com -o results.txt
+   ./httpc -url https://example.com -o results.txt
    ```
 
 6. **Increase Concurrency**:
    ```bash
-   ./http-method-tester -url https://example.com -c 20
+   ./httpc -url https://example.com -c 20
    ```
 
 ---
@@ -100,11 +100,11 @@ The **HTTP Method Tester Tool** is a lightweight and efficient Go-based utility 
 /_//_/\__/\__/ .__/\___/  
             /_/           
 
-HTTP Method Tester
+HTTPC - HTTP Method Tester
 
 Default Methods: GET, PUT, POST, DELETE, PATCH, HEAD, OPTIONS, TRACE, CONNECT
 
-[INFO] Starting HTTP Method Tester Tool...
+[INFO] Starting HTTPC Tool...
 [INFO] Concurrency Level: 10, Timeout: 5s, Retries: 1
 [GET] https://example.com - 200
 [POST] https://example.com - 405
@@ -120,13 +120,13 @@ Default Methods: GET, PUT, POST, DELETE, PATCH, HEAD, OPTIONS, TRACE, CONNECT
 ### Custom HTTP Methods
 You can specify custom HTTP methods using the `-m` flag:
 ```bash
-./http-method-tester -url https://example.com -m "GET,POST,PUT"
+./httpc -url https://example.com -m "GET,POST,PUT"
 ```
 
 ### Status Code Filtering
 Filter results to show only specific status codes:
 ```bash
-./http-method-tester -url https://example.com -status "200,404"
+./httpc -url https://example.com -status "200,404"
 ```
 
 ---
